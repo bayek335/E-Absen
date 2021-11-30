@@ -1,0 +1,181 @@
+* {
+  margin: 0 0;
+  padding: 0 0;
+  font-family: sans-serif;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+a {
+  text-decoration: none;
+}
+
+:root {
+  --primary-color: #8e52f5;
+  --light-color: #fff;
+  --semi-dark-color: #f2f2f2;
+  --text-color: #000000ce;
+  --succes-color: #06b500;
+}
+
+body {
+  max-width: 410px;
+  margin: auto;
+  position: relative;
+}
+body::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  max-width: 410px;
+  height: 100vh;
+  width: 100vw;
+  background-color: #f2f2f2;
+  z-index: -1;
+}
+.container {
+  padding: 0 24px;
+}
+
+.bottom-navbar {
+  background-color: var(--primary-color);
+  max-width: 410px;
+  width: 100%;
+  display: block;
+  position: fixed;
+  border-top-right-radius: 25px;
+  border-top-left-radius: 25px;
+  bottom: 0;
+  border: none;
+  box-shadow: 0 -3px 6px rgba(0, 0, 0, 0.1);
+}
+.nav-item {
+  list-style: none;
+  display: flex;
+  border: none;
+}
+.nav-link {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  padding: 10px 0;
+  color: #ddd;
+}
+.nav-link.active {
+  color: var(--light-color);
+}
+.nav-link .bi {
+  margin: auto;
+  transform: scale(1.5);
+  margin-bottom: 4px;
+}
+.nav-link span {
+  margin: auto;
+}
+.nav-link:first-child {
+  border-top-left-radius: 25px;
+}
+.nav-link:last-child {
+  border-top-right-radius: 25px;
+}
+.nav-link:hover {
+  background-color: #6c1cf5;
+}
+
+#main {
+}
+
+#header {
+  background-color: var(--primary-color);
+  padding-bottom: 60px;
+}
+
+.header-item {
+  color: var(--light-color);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 24px 0;
+  align-items: center;
+  text-transform: uppercase;
+  font-size: 18px;
+}
+.header-span {
+  display: flex;
+  align-items: center;
+}
+.header-item .header-span img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  background-color: #d3d3d3;
+}
+.header-item a {
+  color: var(--light-color);
+}
+#content {
+  background-color: var(--semi-dark-color);
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  border: none;
+  padding-bottom: 65px;
+  margin-top: -60px;
+}
+
+.welcome-text {
+  padding: 60px 0;
+  text-transform: uppercase;
+  font-weight: 700;
+  text-align: center;
+  font-size: 24px;
+}
+
+.absensi-message {
+  display: block;
+  background-color: var(--light-color);
+  border-radius: 15px;
+  padding: 29px 0;
+  text-align: center;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+.absensi-message span {
+  color: var(--succes-color);
+}
+
+.jadwal-pelajaran {
+  margin-top: 60px;
+}
+.jadwal-pelajaran .title {
+  font-size: 16px;
+  font-weight: 600;
+}
+.card-jadwal {
+  display: block;
+  background-color: var(--light-color);
+  border-radius: 15px;
+  margin-top: 20px;
+  padding: 24px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+}
+.card-title {
+  font-size: 16px;
+}
+.card-body p {
+  margin-top: 24px;
+}
+.card-body p span {
+  margin-left: 25%;
+}
+
+.profil-img {
+  position: relative;
+}
+.profil-img::before {
+  content: url("/assets/camera-fill.svg");
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  transform: scale(1.5);
+}

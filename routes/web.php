@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\StudentsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,4 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/dashboard', fn () => view('dashboard.home'));
+Route::get('/', fn () => view('home'));
+
+Route::get('absent', [StudentsController::class, 'absent']);
+Route::get('profile', [StudentsController::class, 'index']);
+
+Route::get('/dashboard', function () {
+    $title = "Dashboard";
+    return view('dashboard.home', compact('title'));
+});
+Route::resource('/dashboard/teachers', TeacherController::class);

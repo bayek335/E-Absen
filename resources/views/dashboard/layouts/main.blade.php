@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
   <meta name="generator" content="Hugo 0.84.0">
-  <title>Dashboard Template · Bootstrap v5.0</title>
+  <title>{{ $title }}</title>
 
   <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
 
@@ -18,6 +18,9 @@
 
   {{-- Bootstrapt icon --}}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+
+  {{-- datepicker css --}}
+  <link rel="stylesheet" href="{{ asset('/assets/css/bootstrap-datepicker.min.css') }}">
 
 
   <!-- Custom styles for this template -->
@@ -32,14 +35,27 @@
     <div class="row">
 
       @include('dashboard.layouts.sidebar')
-      @yield('content')
+
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-lg-2">
+        @yield('content')
+
+      </main>
     </div>
   </div>
-
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
   </script>
+  {{-- Jquery --}}
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous">
+  </script>
+  {{-- datepicker-id --}}
+  <script src="{{ asset('/assets/js/bootstrap-datepicker.min.js') }}"></script>
+  <script src="{{ asset('/assets/js/bootstrap-datepicker.id.min.js') }}" charset="UTF-8" rtl></script>
+  {{-- custom javascript --}}
+  <script src="{{ asset('/assets/js/e-absent.js') }}"></script>
+
   <script src="/assets/js/dashboard.js"></script>
 </body>
 
