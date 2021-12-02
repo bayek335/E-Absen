@@ -26,77 +26,35 @@
     </div>
 </div>
 
-<div class="row teacher">
-    <div class="col-lg-3 col-md-4 col-sm-4 mt-2">
-        <div class="card shadow">
-            <div id="delete-btn" onclick="deleteOnClick()"><i class="bi bi-x"></i></div>
-            <p id="delete-message">Hapus data ini?</p>
-            <img src="{{ asset('/assets/images/bayu.jpg') }}" class=" bg-light" alt="">
-            <div class="card-body text-center pt-2">
-                <h5 class="card-title m-0 p-0">Mas Eko</h5>
-                <p class="">Wali Kelas : Lima ( V )</p>
-                <div class="d-flex justify-content-evenly">
-                    <a href="/dashboard/teachers/bayu" class="btn btn-sm px-3 btn-primary">Detail</a>
-                    <a href="/dashboard/teachers/bayu/edit" class="btn btn-sm px-3 btn-success">Ubah</a>
-                </div>
+<div class="row pt-3 justify-content-center">
+    <div class="col-lg-4 mt-3 ">
+        <div class="card bg-transparent border-0 w-75 text-center">
+            <img src="{{ asset('/assets/images/bayu.jpg') }}" class="img-fluid rounded-circle shadow" alt="">
+        </div>
+    </div>
+    <div class="col-lg-8 mt-3 ml-3 text-start shadow-sm border">
+        <div class="row">
+            <div class="col-5 align-middle">
+                <h5>Nama lengkap</h5>
+                <h5>Nama pengguna</h5>
+                <h5>Kata sandi</h5>
+                <h5>Status</h5>
+                <h5>Mata pelajaran</h5>
+                <h5>Wali kelas</h5>
+                <h5>Ditambahkan pada</h5>
+            </div>
+            <div class="col align-middle">
+                <h5>{{ $teacher->name }}</h5>
+                <h5>{{ $teacher->username }}</h5>
+                <h5>*********</h5>
+                <h5>{{ $teacher->status->name }}</h5>
+                <h5>{{ $teacher->subjects }}</h5>
+                <h5>@if ( $teacher->status->homeroom>0 )
+                    {{ $teacher->class }}
+                    @endif</h5>
+                <h5>{{ $teacher->created_at }}</h5>
             </div>
         </div>
-
-        <style>
-            .teacher #delete-btn {
-                position: absolute;
-                font-size: 20px;
-                color: white;
-                padding: 0 5px;
-                border-radius: 50%;
-                border: none;
-                top: -10px;
-                right: -10px;
-                background-color: red;
-                cursor: pointer;
-            }
-
-            .teacher .card {
-                transition: 300ms ease all;
-            }
-
-            #delete-message {
-                position: absolute;
-                font-size: 12px;
-                color: white;
-                cursor: pointer;
-                padding: 5px 10px;
-                border-radius: 25px;
-                border-bottom-left-radius: 0;
-                border: none;
-                background-color: red;
-                right: -9em;
-                top: -2.5em;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-                opacity: 0;
-                transition: 300ms ease all;
-            }
-
-            .teacher #delete-btn:hover~#delete-message {
-                opacity: 1;
-            }
-
-            #delete-btn:hover {
-                background-color: red;
-            }
-
-            .teacher .card:hover {
-                transform: scale(1.02)
-            }
-
-
-
-            .teacher .card::before:hover~.card::after {
-                content: "Hapus data ini?";
-                position: absolute;
-                color: red;
-            }
-        </style>
     </div>
 </div>
 @endsection

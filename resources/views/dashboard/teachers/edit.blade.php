@@ -1,102 +1,104 @@
 @extends('dashboard.layouts.main')
 
 @section('content')
-<div class="row mb-3 border-bottom">
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2 border mb-1 rounded">
-        <div class="nav-toolbar">
-            <nav class=""
-                style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
-                aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item active"><a class="">Home</a></li>
-                </ol>
-            </nav>
-        </div>
-        <div class="btn-toolbar mb-2 mb-md-0 ">
-            <div class="btn-group me-1">
-                <button type="button" class="btn btn-sm btn-outline-primary"
-                    onclick="location.href='/dashboard/teachers/create'"><i class="bi bi-person-plus"></i>
-                    Tambah</button>
-            </div>
-            <div class="btn-group me-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary"><i class="bi bi-download"></i>
-                    Ekspor</button>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="row teacher">
-    <div class="col-lg-3 col-md-4 col-sm-4 mt-2">
-        <div class="card shadow">
-            <div id="delete-btn" onclick="deleteOnClick()"><i class="bi bi-x"></i></div>
-            <p id="delete-message">Hapus data ini?</p>
-            <img src="{{ asset('/assets/images/bayu.jpg') }}" class=" bg-light" alt="">
-            <div class="card-body text-center pt-2">
-                <h5 class="card-title m-0 p-0">Mas Eko</h5>
-                <p class="">Wali Kelas : Lima ( V )</p>
-                <div class="d-flex justify-content-evenly">
-                    <a href="/dashboard/teachers/bayu" class="btn btn-sm px-3 btn-primary">Detail</a>
-                    <a href="/dashboard/teachers/bayu/edit" class="btn btn-sm px-3 btn-success">Ubah</a>
+<div class="row">
+    <div class="col-lg-10">
+        <form class="form-create-teacher" action="/dashboard/teachers" method="POST">
+            @csrf
+            <div class="mb-3">
+                <label for="name" class="form-label">Nama Lengkap</label>
+                <input type="text" class="form-control form-control-sm  @error('name') is-invalid @enderror " id="name"
+                    aria-describedby="name" autocomplete="off" autofocus name="name">
+                @error('name')
+                <div class="invalid-feedback">
+                    {{ $message }}
                 </div>
+                @enderror
             </div>
-        </div>
-
-        <style>
-            .teacher #delete-btn {
-                position: absolute;
-                font-size: 20px;
-                color: white;
-                padding: 0 5px;
-                border-radius: 50%;
-                border: none;
-                top: -10px;
-                right: -10px;
-                background-color: red;
-                cursor: pointer;
-            }
-
-            .teacher .card {
-                transition: 300ms ease all;
-            }
-
-            #delete-message {
-                position: absolute;
-                font-size: 12px;
-                color: white;
-                cursor: pointer;
-                padding: 5px 10px;
-                border-radius: 25px;
-                border-bottom-left-radius: 0;
-                border: none;
-                background-color: red;
-                right: -9em;
-                top: -2.5em;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-                opacity: 0;
-                transition: 300ms ease all;
-            }
-
-            .teacher #delete-btn:hover~#delete-message {
-                opacity: 1;
-            }
-
-            #delete-btn:hover {
-                background-color: red;
-            }
-
-            .teacher .card:hover {
-                transform: scale(1.02)
-            }
-
-
-
-            .teacher .card::before:hover~.card::after {
-                content: "Hapus data ini?";
-                position: absolute;
-                color: red;
-            }
-        </style>
+            <div class="mb-3 text-success fw-bold">
+                <label for="username" class="form-label">Nama Pengguna</label>
+                <input type="text" class="form-control form-control-sm @error('username') is-invalid @enderror"
+                    id="username" aria-describedby="username" autocomplete="off" name="username">
+                @error('username')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+                @enderror
+            </div>
+            <div class="mb-3 text-success fw-bold">
+                <label for="password" class="form-label">Kata Sandi</label>
+                <input type="password" class="form-control form-control-sm @error('password') is-invalid @enderror"
+                    id="password" aria-describedby="password" autocomplete="off" name="password">
+                @error('password')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+                @enderror
+            </div>
+            <div class="mb-3">
+                <label for="status" class="form-label">Status</label>
+                <select class="form-control form-control-sm @error('status') is-invalid @enderror" id="status"
+                    aria-describedby="status" onchange="statusOnChange(event)" name="status">
+                    <option value="">Pilih...</option>
+                    <option value="1">Kepala Sekolah</option>
+                    <option value="2">Guru dan Wali Kelas</option>
+                    <option value="3">Guru</option>
+                </select>
+                @error('status')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+                @enderror
+            </div>
+            <div class="mb-3 d-none">
+                <label for="class" class="form-label">Kelas</label>
+                <input type="number" class="form-control form-control-sm @error('class') is-invalid @enderror"
+                    id="class" aria-describedby="class" name="class">
+                @error('class')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+                @enderror
+            </div>
+            <div class="mb-3">
+                <label for="subject" class="form-label">Mata Pelajaran <small>( opsional, dapat lebih dari
+                        1)</small></label>
+                <select type="email" class="form-control form-control-sm @error('subjets') is-invalid @enderror"
+                    id="subject" aria-describedby="subject" onchange="subjectOnChange(event)">
+                    <option value="">Pilih...</option>
+                    <option value="IPA">IPA</option>
+                    <option value="MATEMATIKA">MATEMATIKA</option>
+                    <option value="BAHASA INDONESIA">BAHASA INDONESIA</option>
+                    <option value="BAHASA INGGRIS">BAHAS INGGRIS</option>
+                </select>
+                @error('subjects')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+                @enderror
+                <input id="subjects" class="form-control form-control-sm mt-2" type="text" readonly name="subjects">
+            </div>
+            <button type="submit" class="btn btn-sm btn-primary px-5">Submit</button>
+        </form>
     </div>
 </div>
+
+<script>
+    statusOnChange = (e)=>{
+        if(e.target.value == 2){
+            document.querySelector(".form-create-teacher .d-none").classList.replace('d-none', 'd-block')
+        }else if(document.querySelector(".form-create-teacher .d-block")){
+            document.querySelector(".form-create-teacher .d-block").classList.replace('d-block', 'd-none')
+        }
+    }
+
+        const subjects = [];
+    subjectOnChange=(e)=>{
+        subjects.push(e.target.value)
+        document.querySelector("#subjects").value = subjects.join(', ');
+    }
+
+</script>
+
 @endsection
