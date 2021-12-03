@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Status;
-use App\Models\Teacher;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -22,6 +20,7 @@ class DatabaseSeeder extends Seeder
             ClassSeeder::class,
             SubjectSeeder::class,
             TeacherSeeder::class,
+            SubjectTeacherSeeder::class
         ]);
     }
 }

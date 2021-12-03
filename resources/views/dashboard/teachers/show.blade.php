@@ -26,33 +26,61 @@
     </div>
 </div>
 
-<div class="row pt-3 justify-content-center">
-    <div class="col-lg-4 mt-3 ">
-        <div class="card bg-transparent border-0 w-75 text-center">
+<div class="row pt-3 justify-content-center bg-light">
+    <div class="col-md-4 col-6 mt-3 ">
+        <div class="card bg-transparent border-0 text-center">
             <img src="{{ asset('/assets/images/bayu.jpg') }}" class="img-fluid rounded-circle shadow" alt="">
         </div>
     </div>
-    <div class="col-lg-8 mt-3 ml-3 text-start shadow-sm border">
-        <div class="row">
-            <div class="col-5 align-middle">
-                <h5>Nama lengkap</h5>
-                <h5>Nama pengguna</h5>
-                <h5>Kata sandi</h5>
-                <h5>Status</h5>
-                <h5>Mata pelajaran</h5>
-                <h5>Wali kelas</h5>
-                <h5>Ditambahkan pada</h5>
+    <div class="col-lg-8 mt-3 ml-3 text-start px-4 py-2">
+        <div class="row bg-white shadow-sm border p-3">
+            <div class="col-12">
+                <form action="/dashboard/teachers/{{ $teacher->id }}" method="post" class="d-inline mb-2">
+                    @method("DELETE")
+                    @csrf
+                    <button class="btn btn-sm btn-danger"><i class="bi bi-x"></i> Hapus</button>
+                </form>
+                <a href="/dashboard/teachers/{{ $teacher->id }}/edit" class="btn btn-sm btn-success d-inline"><i
+                        class="bi bi-pencil-square"></i> Perbarui</a>
             </div>
-            <div class="col align-middle">
-                <h5>{{ $teacher->name }}</h5>
-                <h5>{{ $teacher->username }}</h5>
-                <h5>*********</h5>
-                <h5>{{ $teacher->status->name }}</h5>
-                <h5>{{ $teacher->subjects }}</h5>
-                <h5>@if ( $teacher->status->homeroom>0 )
-                    {{ $teacher->class }}
-                    @endif</h5>
-                <h5>{{ $teacher->created_at }}</h5>
+            <div class="col-12 mb-3">
+                <div class="form-group mb-3">
+                    <label>Nama lengkap</label>
+                    <input type="text" class="form-control" readonly value="{{ $teacher->name }}">
+                </div>
+                <div class="form-group mb-3">
+                    <label>Nama pengguna</label>
+                    <input type="text" class="form-control" readonly value="{{ $teacher->username }}">
+                </div>
+                <div class="form-group mb-3">
+                    <label>Kata sandi</label>
+                    <input type="text" class="form-control" readonly value="********">
+                </div>
+                <div class="row mb-3">
+                    <div class="form-group col-6">
+                        <label>Status</label>
+                        <input type="text" class="form-control" readonly value="{{ $teacher->status->name }}">
+                    </div>
+                    @if ($teacher->status->homeroom >0)
+                    <div class="form-group col-6">
+                        <label>Wali kelas</label>
+                        <input type="text" class="form-control" readonly
+                            value="{{ $teacher->class->name.' ( '. $teacher->class->roman.' )'}}">
+                    </div>
+                    @endif
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h6>Guru Mata Pelajaran</h6>
+                    </div>
+                    <div class="card-body">
+                        @foreach ($teacher->subjects as $subject)
+                        <h6>{{ $subject->name }}</h6>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -19,16 +19,14 @@ class TeacherSeeder extends Seeder
                 'name' => 'bayu pamungkas',
                 'username' => 'bayupamungkas',
                 'password' => password_hash('password', PASSWORD_BCRYPT),
-                'status_id' => '1',
-                'class_id' => '1',
-                'subjects_id' => '1, 2',
+                'status_id' => 1,
+                'class_id' => 0,
             ], [
                 'name' => 'bayu',
                 'username' => 'bayupamung',
                 'password' => password_hash('password', PASSWORD_BCRYPT),
-                'status_id' => '2',
-                'class_id' => '3',
-                'subjects_id' => '1',
+                'status_id' => 2,
+                'class_id' => 5,
             ]
         ];
         DB::table('teachers')->insert($teacher);

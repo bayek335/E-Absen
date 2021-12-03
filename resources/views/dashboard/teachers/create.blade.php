@@ -9,7 +9,8 @@
             <div class="mb-3">
                 <label for="name" class="form-label">Nama Lengkap</label>
                 <input type="text" class="form-control form-control-sm  @error('name') is-invalid @enderror " id="name"
-                    aria-describedby="name" autocomplete="off" autofocus name="name">
+                    aria-describedby="name" autocomplete="off" autofocus name="name"
+                    value="@if(old('name')){{ old('name') }}@endif">
                 @error('name')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -19,7 +20,8 @@
             <div class="mb-3 text-success fw-bold">
                 <label for="username" class="form-label">Nama Pengguna</label>
                 <input type="text" class="form-control form-control-sm @error('username') is-invalid @enderror"
-                    id="username" aria-describedby="username" autocomplete="off" name="username">
+                    id="username" aria-describedby="username" autocomplete="off" name="username"
+                    value="@if(old('name')){{ old('username') }}@endif">
                 @error('username')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -38,12 +40,15 @@
             </div>
             <div class="mb-3">
                 <label for="status" class="form-label">Status</label>
-                <select class="form-control form-control-sm @error('status') is-invalid @enderror" id="status"
+                <select class="form-select form-select-sm @error('status') is-invalid @enderror" id="status"
                     aria-describedby="status" onchange="statusOnChange(event)" name="status">
                     <option value="">Pilih...</option>
-                    <option value="1">Kepala Sekolah</option>
-                    <option value="2">Guru dan Wali Kelas</option>
-                    <option value="3">Guru</option>
+                    @foreach ($status as $st)
+                    <option @if(old('status')==$st->id){{ 'selected' }} @endif value="{{ $st->id
+                        }}">@if($st->homeroom>0){{ 'Wali
+                        kelas' }}@else{{ $st->name }}@endif
+                    </option>
+                    @endforeach
                 </select>
                 @error('status')
                 <div class="invalid-feedback">
@@ -53,8 +58,13 @@
             </div>
             <div class="mb-3 d-none">
                 <label for="class" class="form-label">Kelas</label>
-                <input type="number" class="form-control form-control-sm @error('class') is-invalid @enderror"
-                    id="class" aria-describedby="class" name="class">
+                <select class="form-select form-select-sm @error('class') is-invalid @enderror" id="class"
+                    aria-describedby="class" name="class">
+                    <option value="">Pilih....</option>
+                    @foreach ($classes as $class)
+                    <option value="{{ $class->id }}">{{ $class->name }} ( {{ $class->roman }} )</option>
+                    @endforeach
+                </select>
                 @error('class')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -63,21 +73,26 @@
             </div>
             <div class="mb-3">
                 <label for="subject" class="form-label">Mata Pelajaran <small>( opsional, dapat lebih dari
-                        1)</small></label>
-                <select type="email" class="form-control form-control-sm @error('subjets') is-invalid @enderror"
+                        1)</small>
+                    <small onclick="onDeleteSubject()" role="button"
+                        class="badge bg-warning text-dark">kosongkan</small>
+                </label>
+                <select type="email" class="form-select form-select-sm @error('subjects') is-invalid @enderror"
                     id="subject" aria-describedby="subject" onchange="subjectOnChange(event)">
                     <option value="">Pilih...</option>
-                    <option value="IPA">IPA</option>
-                    <option value="MATEMATIKA">MATEMATIKA</option>
-                    <option value="BAHASA INDONESIA">BAHASA INDONESIA</option>
-                    <option value="BAHASA INGGRIS">BAHAS INGGRIS</option>
+                    @foreach ($subjects as $subject)
+                    <option data-subject_id="{{ $subject->id }}" value="{{ $subject->name }}">{{ $subject->name }}
+                    </option>
+                    @endforeach
                 </select>
                 @error('subjects')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
                 @enderror
-                <input id="subjects" class="form-control form-control-sm mt-2" type="text" readonly name="subjects">
+
+                <input id="subjects" type="text" readonly class="form-control border p-2 mt-2 bg-light" name="subjects">
+
             </div>
             <button type="submit" class="btn btn-sm btn-primary px-5">Submit</button>
         </form>
@@ -85,6 +100,9 @@
 </div>
 
 <script>
+    if(document.querySelector("select#status").value==2){
+        document.querySelector(".form-create-teacher .d-none").classList.replace('d-none', 'd-block')
+    }
     statusOnChange = (e)=>{
         if(e.target.value == 2){
             document.querySelector(".form-create-teacher .d-none").classList.replace('d-none', 'd-block')
@@ -93,10 +111,18 @@
         }
     }
 
-        const subjects = [];
+    let subject_area = document.querySelector("#subjects");
+    const subjects = [];
     subjectOnChange=(e)=>{
+        if (!subjects.includes(e.target.value)) {
         subjects.push(e.target.value)
-        document.querySelector("#subjects").value = subjects.join(', ');
+        }
+        subject_area.value = subjects
+    }
+    onDeleteSubject=()=>{
+        subjects.splice(0);
+        subject_area.value = subjects
+
     }
 
 </script>

@@ -37,14 +37,20 @@
     @foreach ($teachers as $teacher)
     <div class="col-lg-3 col-md-4 col-sm-4 mt-2">
         <div class="card shadow">
-            <div id="delete-btn" onclick="deleteOnClick()"><i class="bi bi-x"></i></div>
+            <div id="delete-btn" onclick="deleteOnClick(event)"><i data-id="{{ $teacher->id }}"
+                    data-token="{{ csrf_token() }}" class="bi bi-x"></i>
+            </div>
             <p id="delete-message">Hapus data ini?</p>
             <img src="{{ asset('/assets/images/bayu.jpg') }}" class=" bg-light" alt="">
             <div class="card-body text-center pt-2">
                 <h5 class="card-title m-0 p-0">{{ $teacher->name }}</h5>
                 <p class="m-0 p-0 text-uppercase">{{ $teacher->status->name }}</p>
-                <p class="">Wali Kelas : Lima ( V )</p>
-                <div class="d-flex justify-content-evenly">
+                @if ($teacher->status->homeroom >0)
+                <p>Wali kelas : {{ $teacher->class->name.' ( '. $teacher->class->roman.' )'}}</p>
+                @else
+                <p class="mb-sm-4 pt-sm-3"></p>
+                @endif
+                <div class="text-start bg-light p-sm-2 border">
                     <a href="/dashboard/teachers/{{ $teacher->id }}" class="btn btn-sm px-3 btn-primary">Detail</a>
                     <a href="/dashboard/teachers/{{ $teacher->id }}/edit" class="btn btn-sm px-3 btn-success">Ubah</a>
                 </div>
@@ -106,6 +112,14 @@
             content: "Hapus data ini?";
             position: absolute;
             color: red;
+        }
+
+        @media screen and (max-width:577px) {
+
+            #delete-btn,
+            #delete-message {
+                display: none;
+            }
         }
     </style>
 </div>

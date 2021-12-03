@@ -16,7 +16,7 @@ class Teacher extends Model
 
     protected $timestamp = true;
 
-    protected $with = ['status', 'classes', 'subjects'];
+    protected $with = ['status', 'class', 'subjects'];
 
     // public function getRouteKeyName()
     // {
@@ -28,9 +28,9 @@ class Teacher extends Model
         return $this->belongsTo(Status::class);
     }
 
-    public function classes()
+    public function class()
     {
-        return $this->belongsToMany(ClassModel::class);
+        return $this->belongsTo(ClassModel::class);
     }
 
     public function subjects()

@@ -33,8 +33,29 @@ $(function () {
 
 //Teacher managements
 $(() => {
-    deleteOnClick = () => {
-        confirm("Apa anda yakin ingin menghapus data ini?");
+    deleteOnClick = (e) => {
+        console.log(e.target.getAttribute("data-id"));
+        console.log(e.target.getAttribute("data-token"));
+        const teacher_id = e.target.getAttribute("data-id");
+        const _token = e.target.getAttribute("data-token");
+        const on_click = confirm("Apa anda yakin ingin menghapus data ini?");
+        if (on_click) {
+            fetch(`/dashboard/teachers/${teacher_id}`, {
+                method: "Delete",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    _method: "delete",
+                    _token: _token,
+                }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    alert(data.message);
+                    window.location.href = "/dashboard/teachers";
+                });
+        }
     };
 });
 

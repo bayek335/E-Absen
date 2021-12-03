@@ -13,6 +13,6 @@ class ClassModel extends Model
 
     public function teachers()
     {
-        return $this->belongsToMany(Teacher::class);
+        return $this->hasOne(Teacher::class);
     }
 }
