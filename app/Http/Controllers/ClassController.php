@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Class;
+use Throwable;
+use App\Models\ClassModel;
 use Illuminate\Http\Request;
 
 class ClassController extends Controller
@@ -14,19 +15,10 @@ class ClassController extends Controller
      */
     public function index()
     {
-        //
+        $title = 'Kelas';
+        $classes = ClassModel::all();
+        return view('dashboard.classes.index', compact(['title', 'classes']));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -35,27 +27,23 @@ class ClassController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $rules = [
+            'name' => 'required|unique:classes',
+            'roman' => 'required|unique:classes',
+        ];
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Class  $class
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Class $class)
-    {
-        //
-    }
+        $request->validate($rules);
 
+        ClassModel::create($request->all());
+        return redirect()->to('/dashboard/classes')->with('success', 'Kelas berhasil ditambahkan');
+    }
     /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Class  $class
      * @return \Illuminate\Http\Response
      */
-    public function edit(Class $class)
+    public function edit(ClassModel $class)
     {
         //
     }
@@ -67,7 +55,7 @@ class ClassController extends Controller
      * @param  \App\Models\Class  $class
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Class $class)
+    public function update(Request $request, ClassModel $class)
     {
         //
     }
@@ -78,8 +66,16 @@ class ClassController extends Controller
      * @param  \App\Models\Class  $class
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Class $class)
+    public function destroy(ClassModel $class)
     {
-        //
+        try {
+
+            ClassModel::destroy($class->id);
+            return response()->json([
+                'status' => 'success',
+            ])->status(200);
+        } catch (Throwable $e) {
+            return response()->json(['status' => 'succes'])->status(500);
+        }
     }
 }

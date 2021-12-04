@@ -1,3 +1,23 @@
+// global function
+onDeleteButton = (e, id, token) => {
+    e.preventDefault();
+    const val_confirm = confirm("Anda yakin ingin menghapus data ini");
+    if (val_confirm) {
+        fetch(`/dashboard/classes/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                _method: "DELETE",
+                _token: token,
+            }),
+        }).then(() => {
+            window.location.href = "/dashboard/classes";
+        });
+    }
+};
+
 // home
 $(function () {
     //realtime time
@@ -66,3 +86,55 @@ $(function () {
         language: "id",
     });
 });
+
+// class section
+// parsing class num to roman
+function classToRoman(e) {
+    $(".row.classes #class").val(e.target.value);
+    console.log($(".row.classes #class"));
+    console.log("sfhskhf");
+    let names = {
+            satu: 1,
+            dua: 2,
+            tiga: 3,
+            empat: 4,
+            lima: 5,
+            enam: 6,
+        },
+        name = "",
+        j;
+
+    for (j in names) {
+        if (e.target.value == names[j]) {
+            name = j;
+        }
+    }
+
+    let value = {
+            M: 1000,
+            CM: 900,
+            D: 500,
+            CD: 400,
+            C: 100,
+            XC: 90,
+            L: 50,
+            XL: 40,
+            X: 10,
+            IX: 9,
+            V: 5,
+            IV: 4,
+            I: 1,
+        },
+        roman = "",
+        i;
+    for (i in value) {
+        while (e.target.value >= value[i]) {
+            roman += i;
+            e.target.value -= value[i];
+        }
+    }
+
+    $(e.target).attr("selected");
+    $(".row.classes #name").val(name);
+    $("#roman").val(roman);
+}

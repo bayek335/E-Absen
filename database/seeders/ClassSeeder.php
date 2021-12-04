@@ -17,26 +17,32 @@ class ClassSeeder extends Seeder
         DB::table('classes')->insert(
             [
                 [
+                    'class' => '1',
                     'name' => 'Satu',
                     'roman' => 'I'
                 ],
                 [
+                    'class' => '2',
                     'name' => 'Dua',
                     'roman' => 'II'
                 ],
                 [
+                    'class' => '3',
                     'name' => 'Tiga',
                     'roman' => 'III'
                 ],
                 [
+                    'class' => '4',
                     'name' => 'Empat',
                     'roman' => 'IV'
                 ],
                 [
+                    'class' => '5',
                     'name' => 'Lima',
                     'roman' => 'V'
                 ],
                 [
+                    'class' => '6',
                     'name' => 'Enam',
                     'roman' => 'VI'
                 ],

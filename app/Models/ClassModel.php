@@ -10,6 +10,7 @@ class ClassModel extends Model
     use HasFactory;
 
     protected $table = 'classes';
+    protected $guarded = [];
 
     public function teachers()
     {

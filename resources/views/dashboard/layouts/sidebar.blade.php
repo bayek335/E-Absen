@@ -26,31 +26,31 @@
         </h6>
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link active" href="/classes">
+                <a class="nav-link active" href="/dashboard/classes">
                     <span data-feather="file"></span>
                     Kelas
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/students">
+                <a class="nav-link" href="/dashboard/students">
                     <span data-feather="layers"></span>
                     Siswa
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/schedules">
+                <a class="nav-link" href="/dashboard/schedules">
                     <span data-feather="shopping-cart"></span>
                     Jadwal
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/absents">
+                <a class="nav-link" href="/dashboard/absents">
                     <span data-feather="users"></span>
                     Absensi
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/reports">
+                <a class="nav-link" href="/dasboard/reports">
                     <span data-feather="bar-chart-2"></span>
                     Laporan
                 </a>
@@ -64,7 +64,7 @@
         </h6>
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" href="/settings">
+                <a class="nav-link" href="/dashboard/settings">
                     <span data-feather="bar-chart-2"></span>
                     Pengaturan
                 </a>
