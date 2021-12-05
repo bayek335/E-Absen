@@ -89,52 +89,85 @@ $(function () {
 
 // class section
 // parsing class num to roman
-function classToRoman(e) {
-    $(".row.classes #class").val(e.target.value);
-    console.log($(".row.classes #class"));
-    console.log("sfhskhf");
-    let names = {
-            satu: 1,
-            dua: 2,
-            tiga: 3,
-            empat: 4,
-            lima: 5,
-            enam: 6,
-        },
-        name = "",
-        j;
+$(document).ready(function () {
+    const class_value = $(".row.classes #class");
+    const class_name = $(".row.classes #name");
+    const class_roman = $("#roman");
+    const class_id = $(".classes form");
 
-    for (j in names) {
-        if (e.target.value == names[j]) {
-            name = j;
+    classToRoman = (e) => {
+        class_value.val(e.target.value);
+
+        let names = {
+                satu: 1,
+                dua: 2,
+                tiga: 3,
+                empat: 4,
+                lima: 5,
+                enam: 6,
+            },
+            name = "",
+            j;
+
+        for (j in names) {
+            if (e.target.value == names[j]) {
+                name = j;
+            }
         }
-    }
 
-    let value = {
-            M: 1000,
-            CM: 900,
-            D: 500,
-            CD: 400,
-            C: 100,
-            XC: 90,
-            L: 50,
-            XL: 40,
-            X: 10,
-            IX: 9,
-            V: 5,
-            IV: 4,
-            I: 1,
-        },
-        roman = "",
-        i;
-    for (i in value) {
-        while (e.target.value >= value[i]) {
-            roman += i;
-            e.target.value -= value[i];
+        let value = {
+                M: 1000,
+                CM: 900,
+                D: 500,
+                CD: 400,
+                C: 100,
+                XC: 90,
+                L: 50,
+                XL: 40,
+                X: 10,
+                IX: 9,
+                V: 5,
+                IV: 4,
+                I: 1,
+            },
+            roman = "",
+            i;
+        for (i in value) {
+            while (e.target.value >= value[i]) {
+                roman += i;
+                e.target.value -= value[i];
+            }
         }
-    }
 
-    $(e.target).attr("selected");
-    $(".row.classes #name").val(name);
-    $("#roman").val(roman);
-}
+        class_name.val(name);
+        class_roman.val(roman);
+    };
+
+    // fecthing dasta to update
+    editClassHandler = (id) => {
+        fetch(`/dashboard/classes/${id}/edit`)
+            .then((res) => res.json())
+            .then((val) => {
+                class_id.data("id", val.data.id);
+                class_value.val(val.data.class);
+                class_name.val(val.data.name);
+                class_roman.val(val.data.roman);
+                if (class_id.data("id") > 0) {
+                    $(".classes form.form-class").prepend(
+                        "<input type='hidden' name='_method' value='PUT'>"
+                    );
+                    $(".classes .form-title").text("Perbarui ");
+                    $(".classes .form-title").append(
+                        "<a href='/dashboard/classes' class='badge bg-primary fw-normal text-decoration-none text-white' role='button'>Tambah data?</a>"
+                    );
+                    $(".classes .form-class button")
+                        .addClass("btn-success")
+                        .removeClass("btn-primary");
+                    $(".classes .form-class").attr(
+                        "action",
+                        `/dashboard/classes/${id}`
+                    );
+                }
+            });
+    };
+});

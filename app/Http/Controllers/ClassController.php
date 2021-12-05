@@ -16,7 +16,7 @@ class ClassController extends Controller
     public function index()
     {
         $title = 'Kelas';
-        $classes = ClassModel::all();
+        $classes = ClassModel::orderBY('class', 'asc')->get();
         return view('dashboard.classes.index', compact(['title', 'classes']));
     }
     /**
@@ -45,7 +45,10 @@ class ClassController extends Controller
      */
     public function edit(ClassModel $class)
     {
-        //
+        return response()->json([
+            'status' => 'success',
+            'data' => $class,
+        ]);
     }
 
     /**
@@ -57,7 +60,21 @@ class ClassController extends Controller
      */
     public function update(Request $request, ClassModel $class)
     {
-        //
+        $rules = [
+            'name' => 'required|unique:classes',
+            'roman' => 'required|unique:classes',
+        ];
+
+        $request->validate($rules);
+
+        $data = [
+            'class' => $request->class,
+            'name' => $request->name,
+            'roman' => $request->roman,
+        ];
+        ClassModel::where('id', $class->id)->update($data);
+
+        return redirect()->to('/dashboard/classes')->with('success', 'Data berhasil dperbarui');
     }
 
     /**

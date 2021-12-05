@@ -26,4 +26,4 @@ Route::get('/dashboard', function () {
     return view('dashboard.home', compact('title'));
 });
 Route::resource('/dashboard/teachers', TeacherController::class);
-Route::resource('/dashboard/classes', ClassController::class);
+Route::resource('/dashboard/classes', ClassController::class)->except('show');

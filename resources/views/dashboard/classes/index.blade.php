@@ -34,9 +34,9 @@
 @endif
 <div class="row classes">
     <div class="col-md-5">
-        <h5>Tambah data</h5>
+        <h5 class="form-title">Tambah data</h5>
         <div class="bg-light p-3">
-            <form action="/dashboard/classes" method="post">
+            <form action="/dashboard/classes" method="post" data-id="" class="form-class">
                 @csrf
                 <div class="mb-3">
                     <label for="num" class="form-label d-block">Kelas</label>
@@ -104,37 +104,13 @@
                             <button type="button" class="btn badge bg-danger"
                                 onclick="onDeleteButton(event, {{ $class->id }}, '{{ csrf_token() }}')">Hapus</button>
                         </form>
-                        <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal"
-                            data-bs-target="#class-{{ $class->id }}">
-                            modal
-                        </button>
-                        <a href="/dashboard/classes/{{ $class->id }}"
-                            class="badge bg-success text-decoration-none">Ubah</a>
+                        <a role="button" class="badge bg-success text-decoration-none"
+                            onclick="editClassHandler({{ $class->id }})">Ubah</a>
                     </td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
-    </div>
-</div>
-
-{{-- Modal edit class --}}
-<div class="modal fade" id="class-{{ $class->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
     </div>
 </div>
 
