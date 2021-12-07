@@ -1,9 +1,9 @@
 // global function
-onDeleteButton = (e, id, token) => {
+onDeleteButton = (e, id, token, url) => {
     e.preventDefault();
     const val_confirm = confirm("Anda yakin ingin menghapus data ini");
     if (val_confirm) {
-        fetch(`/dashboard/classes/${id}`, {
+        fetch(`${url}${id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -13,7 +13,7 @@ onDeleteButton = (e, id, token) => {
                 _token: token,
             }),
         }).then(() => {
-            window.location.href = "/dashboard/classes";
+            window.location.href = url;
         });
     }
 };
@@ -169,5 +169,92 @@ $(document).ready(function () {
                     );
                 }
             });
+    };
+});
+
+//students section
+$(document).ready(function () {
+    let pageLimit = $("#pagination_limit").val();
+    let page;
+    let s_name = $("#search_name").val();
+    let s_class = $("#search_class").val();
+    let s_gender = $("#search_gender").val();
+
+    $("#search_name").keyup(function (e) {
+        s_name = e.target.value;
+        e.preventDefault();
+        let url = `/dashboard/students?lim=${pageLimit}&&name=${e.target.value}`;
+        getData(url);
+    });
+    filterByGender = (e) => {
+        s_gender = e.target.value;
+        e.preventDefault();
+        let url = `/dashboard/students?lim=${pageLimit}&&gender=${e.target.value}`;
+        if (s_class != "") {
+            url = `/dashboard/students?lim=${pageLimit}&&class=${s_class}&&gender=${e.target.value}`;
+        } else {
+        }
+        getData(url);
+    };
+    filterByClass = (e) => {
+        s_class = e.target.value;
+        e.preventDefault();
+        let url = `/dashboard/students?lim=${pageLimit}&&class=${e.target.value}`;
+        if (s_gender != "") {
+            url = `/dashboard/students?lim=${pageLimit}&&class=${e.target.value}&&gender=${s_gender}`;
+        }
+        getData(url);
+    };
+
+    limitOfPaginate = (e) => {
+        pageLimit = e.target.value;
+        if (s_name != "") {
+            getData(
+                `/dashboard/students?lim=${e.target.value}&&name=${s_name}`
+            );
+        } else if (s_class != "") {
+            getData(
+                `/dashboard/students?lim=${e.target.value}&&class=${s_class}`
+            );
+        } else if (s_gender != "") {
+            getData(
+                `/dashboard/students?lim=${e.target.value}&&gender=${s_gender}`
+            );
+        } else {
+            getData(`/dashboard/students?lim=${e.target.value}`);
+        }
+    };
+
+    paginationOnClick = (e) => {
+        e.preventDefault();
+        page = e.target.getAttribute("href").split("page=")[1];
+        if (s_name != "") {
+            getData(
+                `/dashboard/students?lim=${pageLimit}&&page=${page}&&name=${s_name}`
+            );
+        } else if (s_class != "") {
+            getData(
+                `/dashboard/students?lim=${pageLimit}&&page=${page}&&class=${s_class}`
+            );
+        } else if (s_gender != "") {
+            getData(
+                `/dashboard/students?lim=${pageLimit}&&page=${page}&&gender=${s_gender}`
+            );
+        } else {
+            getData(`/dashboard/students?lim=${pageLimit}&&page=${page}`);
+        }
+
+        location.hash = `page=` + page;
+    };
+
+    getData = (url) => {
+        $.ajax({
+            type: "GET",
+            url: url,
+            dataType: "html",
+            success: function (data) {
+                $("#class_ajax").empty().html(data);
+            },
+        });
     };
 });

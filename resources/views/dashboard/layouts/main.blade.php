@@ -22,9 +22,10 @@
   {{-- datepicker css --}}
   <link rel="stylesheet" href="{{ asset('/assets/css/bootstrap-datepicker.min.css') }}">
 
-
   <!-- Custom styles for this template -->
   <link href="/assets/css/dashboard.css" rel="stylesheet">
+
+
 </head>
 
 <body>
@@ -51,6 +52,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
   </script>
+
   {{-- datepicker-id --}}
   <script src="{{ asset('/assets/js/bootstrap-datepicker.min.js') }}"></script>
   <script src="{{ asset('/assets/js/bootstrap-datepicker.id.min.js') }}" charset="UTF-8" rtl></script>

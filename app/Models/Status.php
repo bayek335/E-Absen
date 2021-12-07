@@ -15,4 +15,9 @@ class Status extends Model
     {
         return $this->hasMany(Teacher::class);
     }
+
+    public function students()
+    {
+        return $this->hasMany(Student::class);
+    }
 }

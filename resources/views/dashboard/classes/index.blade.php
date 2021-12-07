@@ -102,7 +102,7 @@
                     <td>
                         <form class="d-inline">
                             <button type="button" class="btn badge bg-danger"
-                                onclick="onDeleteButton(event, {{ $class->id }}, '{{ csrf_token() }}')">Hapus</button>
+                                onclick="onDeleteButton(event, {{ $class->id }}, '{{ csrf_token() }}', '/dashboard/classes/')">Hapus</button>
                         </form>
                         <a role="button" class="badge bg-success text-decoration-none"
                             onclick="editClassHandler({{ $class->id }})">Ubah</a>

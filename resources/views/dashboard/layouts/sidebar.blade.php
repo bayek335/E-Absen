@@ -6,13 +6,13 @@
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
             <span class="fw-bold">ADMIN</span>
             <a class="link-secondary" href="#" aria-label="Add a new report">
-                <span data-feather="plus-circle"></span>
+                <i class="bi bi-plus"></i>
             </a>
         </h6>
         <ul class="nav flex-column mb-2">
             <li class="nav-item">
-                <a class="nav-link" href="/dashboard/teachers">
-                    <span data-feather="file-text"></span>
+                <a class="nav-link @if(Request::is('dashboard/teachers*')) active @endif" href="/dashboard/teachers">
+                    <i class="bi bi-file"></i>
                     Guru
                 </a>
             </li>
@@ -21,37 +21,37 @@
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
             <span class="fw-bold">KONTROL</span>
             <a class="link-secondary" href="#" aria-label="Add a new report">
-                <span data-feather="plus-circle"></span>
+                <i class="bi bi-plus"></i>
             </a>
         </h6>
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link active" href="/dashboard/classes">
-                    <span data-feather="file"></span>
+                <a class="nav-link @if(Request::is('dashboard/classes*')) active @endif" href="/dashboard/classes">
+                    <i class="bi bi-border-all"></i>
                     Kelas
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/dashboard/students">
-                    <span data-feather="layers"></span>
+                <a class="nav-link @if(Request::is('dashboard/students*')) active @endif" href="/dashboard/students">
+                    <i class="bi bi-border-all"></i>
                     Siswa
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/dashboard/schedules">
-                    <span data-feather="shopping-cart"></span>
+                <a class="nav-link @if(Request::is('dashboard/schedules*')) active @endif" href="/dashboard/schedules">
+                    <i class="bi bi-border-all"></i>
                     Jadwal
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/dashboard/absents">
-                    <span data-feather="users"></span>
+                <a class="nav-link @if(Request::is('dashboard/absents*')) active @endif" href="/dashboard/absents">
+                    <i class="bi bi-border-all"></i>
                     Absensi
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/dasboard/reports">
-                    <span data-feather="bar-chart-2"></span>
+                <a class="nav-link @if(Request::is('dashboard/reports*')) active @endif" href="/dasboard/reports">
+                    <i class="bi bi-border-all"></i>
                     Laporan
                 </a>
             </li>
@@ -59,13 +59,13 @@
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
             <span class="fw-bold">TAMBAHAN</span>
             <a class="link-secondary" href="#" aria-label="Add a new report">
-                <span data-feather="plus-circle"></span>
+                <i class="bi bi-border-all"></i>
             </a>
         </h6>
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" href="/dashboard/settings">
-                    <span data-feather="bar-chart-2"></span>
+                <a class="nav-link @if(Request::is('dashboard/settings*')) active @endif" href="/dashboard/settings">
+                    <i class="bi bi-border-all"></i>
                     Pengaturan
                 </a>
             </li>
