@@ -4,19 +4,22 @@
         data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
+    @if (!Request::is('dashboard'))
+    <div class="d-flex text-white align-item-middle justify-content-end w-100">
+        <p class="mx-2 my-0">{{ Carbon\Carbon::now()->locale('id')->isoFormat('dddd, D MMMM Y') }}</p>
+        <p class="this-time my-0"></p>
+    </div>
+    @endif
     <div class="dropdown p-3 ">
         <div class="dropdown-toggle text-light text-end" type="button" id="dropdownMenuButton1"
             data-bs-toggle="dropdown" aria-expanded="false">
-            Bayu Pamungkas
+            Halo, Bayu Pamungkas
         </div>
-        <ul class="dropdown-menu text-end" style="left:-20px" aria-labelledby="dropdownMenuButton1">
+        <ul class="dropdown-menu text-center px-3" style="left:-20px" aria-labelledby="dropdownMenuButton1">
             <li><a class="dropdown-item" href="/dashboard/profil/">Profil</a></li>
             <li>
-                <form action="" method="post" class="px-3">
-                    @method("DELETE")
-                    @csrf
-                    <button class="btn btn-sm btn-danger" type="submit">Keluar</button>
-                </form>
+                <a class="btn w-100 mt-2 btn-sm btn-danger" href="/logout"><small>Keluar <i
+                            class="bi bi-box-arrow-right"></i></small></a>
             </li>
         </ul>
     </div>

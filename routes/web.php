@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\SecondaryPasswordController;
 use App\Http\Controllers\StudentDashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\StudentsController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -28,4 +30,7 @@ Route::get('/dashboard', function () {
 });
 Route::resource('/dashboard/classes', ClassController::class)->except('show');
 Route::resource('/dashboard/teachers', TeacherController::class);
+
 Route::resource('/dashboard/students', StudentDashboardController::class);
+Route::get('/dashboard/secondaryPasswords/{secondaryPassword:student_id}', [SecondaryPasswordController::class, 'showPassword']);
+Route::put('/dashboard/students/uploadimage/{student:id}', [StudentDashboardController::class, 'uploadImage'])->name('student_upload_image');

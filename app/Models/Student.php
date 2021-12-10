@@ -33,8 +33,6 @@ class Student extends Model
         );
     }
 
-
-
     public function class()
     {
         return $this->belongsTo(ClassModel::class);
@@ -42,5 +40,11 @@ class Student extends Model
     public function status()
     {
         return $this->belongsTo(Status::class);
+    }
+
+
+    public function getRouteKeyName()
+    {
+        return 'nisn';
     }
 }

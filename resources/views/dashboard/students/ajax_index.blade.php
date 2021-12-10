@@ -30,27 +30,31 @@
                     <th scope="col">Nama</th>
                     <th scope="col">Kelas</th>
                     <th scope="col">Jenis kelamin</th>
-                    <th scope="col" style="width:10%">Aksi</th>
+                    <th scope="col" style="width:20%">Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($students as $student)
+                @foreach ($students as $key => $student)
                 <tr class="align-middle">
-                    <th scope="row">{{ $loop->iteration }}</th>
-                    <td>
-                        <img class="img-fluid" src="..." alt=""
+                    <th scope="row">{{ $loop->iteration+$students->firstItem()-1 }}</th>
+                    <td class="text-center bg-light">
+                        <img class="img-fluid" src="{{ asset($student->image) }}" alt=""
                             style="max-width:110px; max-height:110px;height:100px;width:100px">
                     </td>
-                    <td><a href="/dashboard/students/{{ $student->id }}">
+                    <td><a href="/dashboard/students/{{ $student->nisn }}">
                             <h6 class="p-0">{{ $student->name}}</h6>
                         </a></td>
                     <td>{{ $student->class->name }} ( {{ $student->class->roman }} )</td>
                     <td>{{ $student->gender }}</td>
                     <td>
+                        <a href="/dashboard/students/{{ $student->nisn }}/edit" class="btn btn-sm btn-success"><small>
+                                <i class="bi bi-pencil-square"></i> Ubah
+                            </small>
+                        </a>
                         <form class="d-inline">
                             <button class="btn btn-sm btn-danger"
-                                onclick="onDeleteButton(event, {{ $student->id }}, '{{ csrf_token() }}','/dashboard/students/')"><i
-                                    class="bi bi-trash"></i>Hapus</button>
+                                onclick="onDeleteButton(event, {{ $student->nisn }}, '{{ csrf_token() }}','/dashboard/students/')"><small><i
+                                        class="bi bi-trash"></i>Hapus</small></button>
                         </form>
                     </td>
                 </tr>
@@ -62,45 +66,53 @@
 
 
         {{-- Custom pagination students --}}
-        <div class="float-end">
-            <nav aria-label="Student page navigation">
-                <ul class="pagination" onclick="paginationOnClick(event)">
-                    <li class="page-item @if($students->onFirstPage())disabled @endif">
-                        <a class="page-link " href="{{ $students->previousPageUrl()}}" aria-label="Previous">
-                            &lsaquo;
-                        </a>
-                    </li>
-                    {{-- To cosutm a side of esach current active to 2 items --}}
-                    @if ($students->currentPage()-3 > 0)
-                    <li class="page-item @if($students->onFirstPage())disabled @endif">
-                        <a class="page-link" aria-label="Three dots">
-                            <span aria-hidden="true">...</span>
-                        </a>
-                    </li>
-                    @endif
-                    @for ($i=0; $i < $students->lastPage(); $i++)
-                        <li
-                            class="page-item @if($students->currentPage()==$i+1) active @elseif($i+1<=$students->currentPage()-3 || $i+1 >=$students->currentPage()+3)d-none @endif">
-                            <a class="page-link" @if($students->currentPage()!=$i+1) href="{{ $students->url($i+1) }}"
-                                @endif>
-                                {{ $i+1}}
+        <div class="row mb-5">
+            <div class="col-6 ">
+                <p class="p-0 m-0 ">Menampilkan {{ $students->firstItem() }} - {{ $students->lastItem() }}
+                    dari
+                    {{ $students->total()}} entri</p>
+            </div>
+            <div class="col-sm-6 d-flex justify-content-end ">
+                <nav aria-label="Student page navigation align-items-center">
+                    <ul class="pagination" onclick="paginationOnClick(event)">
+                        <li class="page-item @if($students->onFirstPage())disabled @endif">
+                            <a class="page-link " href="{{ $students->previousPageUrl()}}" aria-label="Previous">
+                                &lsaquo;
                             </a>
                         </li>
-                        @endfor
-                        @if ($students->lastPage()-$students->currentPage()>2) <li
-                            class="page-item @if($students->onFirstPage())disabled @endif">
+                        {{-- To cosutm a side of esach current active to 2 items --}}
+                        @if ($students->currentPage()-3 > 0)
+                        <li class="page-item @if($students->onFirstPage())disabled @endif">
                             <a class="page-link" aria-label="Three dots">
                                 <span aria-hidden="true">...</span>
                             </a>
                         </li>
                         @endif
-                        <li class="page-item @if(!$students->hasMorePages())disabled @endif">
-                            <a class="page-link" href="{{ $students->nextPageUrl() }}" aria-label="Next">
-                                &rsaquo;
-                            </a>
-                        </li>
-                </ul>
-            </nav>
+                        @for ($i=0; $i < $students->lastPage(); $i++)
+                            <li
+                                class="page-item @if($students->currentPage()==$i+1) active @elseif($i+1<=$students->currentPage()-3 || $i+1 >=$students->currentPage()+3)d-none @endif">
+                                <a class="page-link" @if($students->currentPage()!=$i+1) href="{{ $students->url($i+1)
+                                    }}"
+                                    @endif>
+                                    {{ $i+1}}
+                                </a>
+                            </li>
+                            @endfor
+                            @if ($students->lastPage()-$students->currentPage()>2) <li
+                                class="page-item @if($students->onFirstPage())disabled @endif">
+                                <a class="page-link" aria-label="Three dots">
+                                    <span aria-hidden="true">...</span>
+                                </a>
+                            </li>
+                            @endif
+                            <li class="page-item @if(!$students->hasMorePages())disabled @endif">
+                                <a class="page-link" href="{{ $students->nextPageUrl() }}" aria-label="Next">
+                                    &rsaquo;
+                                </a>
+                            </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
     @endif

@@ -29,7 +29,7 @@
         </div>
     </div>
     <div class="col-lg-4  text-center">
-        <h1 class="this-time p-3 bg-primary rounded"></h1>
+        <h1 class="this-time p-2 border border-3 border-primary rounded"></h1>
     </div>
 </div>
 <style>
