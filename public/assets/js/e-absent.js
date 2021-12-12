@@ -17,6 +17,21 @@ onDeleteButton = (e, id, token, url) => {
         });
     }
 };
+function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(";");
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == " ") {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
 
 // home
 $(function () {
@@ -172,7 +187,7 @@ $(document).ready(function () {
     };
 });
 
-//students section
+//students section dashboard
 $(document).ready(function () {
     let pageLimit = $("#pagination_limit").val();
     let page;
@@ -319,11 +334,14 @@ $(document).ready(function () {
     updateProfileImage = (id, token) => {
         const file_image = $(".show-student #image");
 
-        const ofReader = new FileReader();
-        ofReader.readAsDataURL(file_image[0].files[0]);
-        ofReader.onload = function (event) {
-            $("#profile-picture").attr("src", event.target.result);
-        };
+        const type = file_image[0].files[0].type.split("/")[0];
+        if (type == "image") {
+            const ofReader = new FileReader();
+            ofReader.readAsDataURL(file_image[0].files[0]);
+            ofReader.onload = function (event) {
+                $("#profile-picture").attr("src", event.target.result);
+            };
+        }
 
         let form_data = new FormData();
         form_data.append("_method", "PUT");
@@ -341,6 +359,37 @@ $(document).ready(function () {
             .then((val) => {
                 $(".student-img-profile").removeClass("loading-img-profile");
                 $(".student-img-profile .spinner-border").removeClass("active");
+                if (val.status == "failed") {
+                    $(".show-student .card-header>div:nth-child(1)").after(
+                        "<div class='alert alert-danger'>" +
+                            val.data.message +
+                            "</div>"
+                    );
+                }
             });
     };
+});
+
+// schedules section dashboard
+$(document).ready(function () {
+    // create schedules
+    // add new row
+    let schedule_row = $("#create_schedule_row");
+    let schedule_form = $("#create_schedule_form");
+    let count_cookie = getCookie("create_schedule_row");
+
+    addRowSchedules = () => {
+        let num_create_schedule_row = $("#num_create_schedule_row").val();
+        document.cookie = `create_schedule_row = ${num_create_schedule_row}`;
+        location.href = "/dashboard/schedules/create";
+    };
+
+    loopCreateScheduleRow = (total) => {
+        for (let i = 1; i < total; i++) {
+            schedule_form.append(
+                `<div class='row bg-light rounded p-2 pb-3 border mb-3' id='create_schedule_row'>${schedule_row.html()}</div>`
+            );
+        }
+    };
+    loopCreateScheduleRow(count_cookie);
 });

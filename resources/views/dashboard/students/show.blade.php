@@ -23,7 +23,7 @@
                     <i class="bi bi-camera-fill fs-4 text-dark bg-light p-2 py-0 pb-1 rounded shadow-sm border"></i>
                 </label>
                 <input onchange="updateProfileImage({{ $student->id }}, '{{ csrf_token() }}')" type="file" name="image"
-                    id="image" class="visually-hidden">
+                    id="image" class="visually-hidden" accept="PNG, JPEG, JPG, GIF">
 
                 <h5 class="mt-4">{{ $student->name }}</h5>
             </div>

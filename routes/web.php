@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SecondaryPasswordController;
 use App\Http\Controllers\StudentDashboardController;
 use Illuminate\Support\Facades\Route;
@@ -34,3 +35,7 @@ Route::resource('/dashboard/teachers', TeacherController::class);
 Route::resource('/dashboard/students', StudentDashboardController::class);
 Route::get('/dashboard/secondaryPasswords/{secondaryPassword:student_id}', [SecondaryPasswordController::class, 'showPassword']);
 Route::put('/dashboard/students/uploadimage/{student:id}', [StudentDashboardController::class, 'uploadImage'])->name('student_upload_image');
+
+Route::resource('/dashboard/schedules', ScheduleController::class)->except('show');
+Route::get('/dashboard/days/{days:id}/classes/{classes:id}', [ScheduleController::class, 'show']);
+Route::delete('/dashboard/days/{days:id}/classes/{classes:id}', [ScheduleController::class, 'destroy']);

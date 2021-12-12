@@ -193,17 +193,29 @@ class StudentDashboardController extends Controller
         // $file_name = $request->file(('image'))->getClientOriginalName();
         // $img_name = time() . $file_name;
         // $new_name = preg_replace('/[^a-z0-9]/i', '_', $img_name);
-        Storage::delete($student->image);
-        $image_name = $request->file('image')->store('images/profile_images');
-        $student = Student::find($student->id);
-        $student->image = $image_name;
-        $student->save();
+        $mimes = explode('/', $request->file('image')->getMimeType());
 
-        return response()->json([
-            'status' => 'success',
-            'data' => [
-                'suorce' => $image_name,
-            ],
-        ]);
+        if ($mimes[0] == 'image') {
+
+            Storage::delete($student->image);
+            $image_name = $request->file('image')->store('images/profile_images');
+            $student = Student::find($student->id);
+            $student->image = $image_name;
+            $student->save();
+
+            return response()->json([
+                'status' => 'success',
+                'data' => [
+                    'suorce' => $image_name,
+                ],
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'failed',
+                'data' => [
+                    'message' => 'File input must be <strong>Image</strong>!.'
+                ],
+            ]);
+        }
     }
 }

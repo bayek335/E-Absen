@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             StatusSeeder::class,
             ClassSeeder::class,
             SubjectSeeder::class,
+            DaysSeeder::class,
             TeacherSeeder::class,
             SubjectTeacherSeeder::class
         ]);

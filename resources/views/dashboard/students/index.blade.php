@@ -47,7 +47,7 @@
     <div class="col-12 mb-3">
         <form action="" class="d-flex ">
             <div class="form-group">
-                <label for="search_name" class="">Filter berdasarkan nama</label>
+                <label for="search_name" class="">Filter berdasarkan Nama atau NISN</label>
                 <input type="text" name="search" id="search_name" class="form-control form-control-sm m-0 ">
             </div>
             <div class="form-group mx-4">

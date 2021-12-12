@@ -18,7 +18,9 @@ class Student extends Model
     {
         $query->when($request['name'] ?? false, function ($query, $search) {
             return $query->where(function ($query) use ($search) {
-                $query->where('name', 'like', '%' . $search . '%');
+                $query->where('name', 'like', '%' . $search . '%')->orWhere(function ($query) use ($search) {
+                    return $query->where('nisn', 'like', '%' . $search . '%');
+                });
             });
         });
         $query->when(
