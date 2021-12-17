@@ -1,6 +1,13 @@
 @extends('dashboard.layouts.main')
 
 @section('content')
+@if (session()->has('success'))
+<div class="row">
+    <div class="col-lg-810 alert alert-success text-center">
+        {{ session('success') }} <i class="bi bi-check-lg"></i>
+    </div>
+</div>
+@endif
 <div class="row">
     <div class="col-lg-10">
         <h5>Jadwal pelajaran</h5>
@@ -28,7 +35,7 @@
                         <td>
                             <form class="d-inline float-end px-2">
                                 <button class="btn btn-danger rounded-circle px-1 py-0"><i class="bi bi-x-circle"
-                                        onclick="onDeleteButton(event, {{ $sc->id }}, '{{ csrf_token() }}', '/dashboard/schedules/')"></i></button>
+                                        onclick="onDeleteButton(event, {{ $sc->schedule_id }}, '{{ csrf_token() }}', '/dashboard/schedules/')"></i></button>
                             </form>
                         </td>
                     </tr>
@@ -40,11 +47,11 @@
                     <small><i class="bi bi-pencil-square"></i>Perbarui</small>
                 </button>
                 <form class="d-inline" method="POST"
-                    action="/dashboard/days/{{ $schedules[0]->day_id }}/classes/{{ $schedules[0]->class_id }}">
+                    action="/dashboard/days/{{ $schedules[0]->day_id }}/classes/{{ $schedules[0]->class_id }}"
+                    onclick="!confirm('Anda yakin ingin menghapus seluruh data ini')?event.preventDefault():''">
                     @method("DELETE")
                     @csrf
-                    <button class="btn btn-sm btn-danger"
-                        onclick="confirm('Anda yakin ingin menghapus seluruh data ini')">
+                    <button class="btn btn-sm btn-danger">
                         <small><i class="bi bi-trash"></i> Hapus semua</small>
                     </button>
                 </form>

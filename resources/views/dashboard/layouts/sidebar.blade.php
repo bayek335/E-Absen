@@ -50,7 +50,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link @if(Request::is('dashboard/reports*')) active @endif" href="/dasboard/reports">
+                <a class="nav-link @if(Request::is('dashboard/reports*')) active @endif" href="/dashboard/reports">
                     <i class="bi bi-border-all"></i>
                     Laporan
                 </a>

@@ -6,7 +6,7 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div class="alert alert-success text-center">
-            {{ session('success') }}
+            {!! session('success')!!}
         </div>
     </div>
 </div>
@@ -33,12 +33,8 @@
                     <td>
                         <a href="/dashboard/days/{{ $sc->day_id }}/classes/{{ $sc->class_id }}"
                             class="btn btn-sm btn-info"><small>Detail</small></a>
-                        <a href="/dashboard/schedules/1" class="btn btn-sm btn-success"><small>Ubah</small></a>
-                        <form class="d-inline" action="/dashboard/schedules/hari" method="POST">
-                            @method("DELETE")
-                            @csrf
-                            <button class="btn btn-sm btn-danger"><small>Hapus</small></button>
-                        </form>
+                        <a href="/dashboard/days/{{ $sc->day_id }}/classes/{{ $sc->class_id }}/edit"
+                            class="btn btn-sm btn-success"><small>Ubah</small></a>
                     </td>
                 </tr>
                 @endforeach

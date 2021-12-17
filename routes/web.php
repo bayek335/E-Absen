@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AbsentController;
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SecondaryPasswordController;
 use App\Http\Controllers\StudentDashboardController;
@@ -36,6 +38,14 @@ Route::resource('/dashboard/students', StudentDashboardController::class);
 Route::get('/dashboard/secondaryPasswords/{secondaryPassword:student_id}', [SecondaryPasswordController::class, 'showPassword']);
 Route::put('/dashboard/students/uploadimage/{student:id}', [StudentDashboardController::class, 'uploadImage'])->name('student_upload_image');
 
-Route::resource('/dashboard/schedules', ScheduleController::class)->except('show');
+Route::resource('/dashboard/schedules', ScheduleController::class)->except(['show', 'edit']);
 Route::get('/dashboard/days/{days:id}/classes/{classes:id}', [ScheduleController::class, 'show']);
-Route::delete('/dashboard/days/{days:id}/classes/{classes:id}', [ScheduleController::class, 'destroy']);
+Route::delete('/dashboard/days/{days:id}/classes/{classes:id}', [ScheduleController::class, 'destroyAll']);
+Route::get('/dashboard/days/{days:id}/classes/{classes:id}/edit', [ScheduleController::class, 'edit']);
+Route::put('/dashboard/days/{days:id}/classes/{classes:id}/edit', [ScheduleController::class, 'update']);
+
+Route::resource('/dashboard/absents', AbsentController::class);
+Route::get('/dashboard/absents/class/{classes:id}/date/{absents:attend_date}/edit', [AbsentController::class, 'edit']);
+Route::put('/dashboard/absents/class/{class_id}/date/{absents:attend_date}/edit', [AbsentController::class, 'updateAll']);
+
+Route::get('/dashboard/reports', [ReportController::class, 'index']);

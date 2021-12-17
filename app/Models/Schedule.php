@@ -11,7 +11,7 @@ class Schedule extends Model
     use HasFactory;
 
     protected $guarded = [];
-    protected $with = ['classes', 'subjects', 'days'];
+    // protected $with = ['classes', 'subjects', 'days'];
 
     public function getSchedulesIndex($class_id)
     {
@@ -30,6 +30,6 @@ class Schedule extends Model
             ->join('classes', 'class_id', '=', 'classes.id')
             ->join('days', 'day_id', '=', 'days.id')
             ->join('subjects', 'subject_id', '=', 'subjects.id')
-            ->select('schedules.*', 'classes.*', 'days.*', 'subjects.*', 'classes.name as class_name', 'days.name as day_name', 'subjects.name as sbj_name');
+            ->select('schedules.*', 'classes.*', 'days.*', 'subjects.*', 'classes.name as class_name', 'days.name as day_name', 'subjects.name as sbj_name', 'subjects.id as sbj_id', 'schedules.id as schedule_id');
     }
 }

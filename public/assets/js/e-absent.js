@@ -12,9 +12,11 @@ onDeleteButton = (e, id, token, url) => {
                 _method: "DELETE",
                 _token: token,
             }),
-        }).then(() => {
-            window.location.href = url;
-        });
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                window.location.href = url;
+            });
     }
 };
 function getCookie(cname) {
@@ -372,15 +374,19 @@ $(document).ready(function () {
 
 // schedules section dashboard
 $(document).ready(function () {
+    let path = document.location.href.split("/");
+    path = path[path.length - 1];
+    if (path != "create") {
+        document.cookie = `create_schedule_row = 1;path=/`;
+    }
     // create schedules
     // add new row
     let schedule_row = $("#create_schedule_row");
     let schedule_form = $("#create_schedule_form");
     let count_cookie = getCookie("create_schedule_row");
-
     addRowSchedules = () => {
         let num_create_schedule_row = $("#num_create_schedule_row").val();
-        document.cookie = `create_schedule_row = ${num_create_schedule_row}`;
+        document.cookie = `create_schedule_row = ${num_create_schedule_row};path=/`;
         location.href = "/dashboard/schedules/create";
     };
 
@@ -392,4 +398,75 @@ $(document).ready(function () {
         }
     };
     loopCreateScheduleRow(count_cookie);
+});
+
+//Absent section dashboard
+$(document).ready(function () {
+    let absent_filClass = $("#absent_filter_class");
+    let class_value;
+
+    absent_filClass.change(function (e) {
+        e.preventDefault();
+        class_value = e.target.value;
+        $.ajax({
+            type: "get",
+            url: `/dashboard/absents?class=${e.target.value}`,
+            dataType: "html",
+            success: function (response) {
+                $("#absent_students").html(response);
+            },
+        });
+    });
+
+    absentPaginationOnClick = (e) => {
+        e.preventDefault();
+        page = e.target.getAttribute("href").split("page=")[1];
+        // if (s_name != "") {
+        //     getData(
+        //         `/dashboard/students?lim=${pageLimit}&&page=${page}&&name=${s_name}`
+        //     );
+        // } else if (s_class != "") {
+        //     getData(
+        //         `/dashboard/students?lim=${pageLimit}&&page=${page}&&class=${s_class}`
+        //     );
+        // } else if (s_gender != "") {
+        //     getData(
+        //         `/dashboard/students?lim=${pageLimit}&&page=${page}&&gender=${s_gender}`
+        //     );
+        // } else {
+        $.ajax({
+            type: "get",
+            url: `/dashboard/absents?class=${class_value}&&page=${page}`,
+            dataType: "html",
+            success: function (response) {
+                $("#absent_students").html(response);
+            },
+        });
+        location.hash = `page=` + page;
+    };
+
+    //create absents
+    absentCheckAll = (id_desc) => {
+        let desc_class = $(".form-check-input");
+        for (let i = 0; i < desc_class.length; i++) {
+            if (desc_class[i].getAttribute("value") == id_desc) {
+                desc_class[i].setAttribute("checked", "true");
+            } else {
+                desc_class[i].removeAttribute("checked");
+            }
+        }
+    };
+
+    setOutOnClick = (id) => {
+        let date = new Date();
+        let hours = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+        if ($("input#" + id).length > 1) {
+            $(`input#${id}`).attr("value", hours);
+        } else {
+            if (date.getHours() < 10 && date.getMinutes() < 10) {
+                hours = `0${date.getHours()}:0${date.getMinutes()}`;
+            }
+            $(`#${id}`).val(hours);
+        }
+    };
 });
