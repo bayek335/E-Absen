@@ -38,6 +38,7 @@
                 <form action="/dashboard/teachers/{{ $teacher->id }}" method="post" class="d-inline mb-2">
                     @method("DELETE")
                     @csrf
+                    <input type="hidden" name="teacher_show_delete" value="1">
                     <button class="btn btn-sm btn-danger"><i class="bi bi-x"></i> Hapus</button>
                 </form>
                 <a href="/dashboard/teachers/{{ $teacher->id }}/edit" class="btn btn-sm btn-success d-inline"><i

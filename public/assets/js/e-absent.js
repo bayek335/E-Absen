@@ -15,6 +15,7 @@ onDeleteButton = (e, id, token, url) => {
         })
             .then((res) => res.json())
             .then((res) => {
+                window.alert(res.data.message);
                 window.location.href = url;
             });
     }
@@ -34,6 +35,16 @@ function getCookie(cname) {
     }
     return "";
 }
+
+// datepicker
+$(function () {
+    $(".datepicker").datepicker({
+        format: "yyyy",
+        viewMode: "years",
+        minViewMode: "years",
+        language: "id",
+    });
+});
 
 // home
 $(function () {
@@ -71,8 +82,6 @@ $(function () {
 //Teacher managements
 $(() => {
     deleteOnClick = (e) => {
-        console.log(e.target.getAttribute("data-id"));
-        console.log(e.target.getAttribute("data-token"));
         const teacher_id = e.target.getAttribute("data-id");
         const _token = e.target.getAttribute("data-token");
         const on_click = confirm("Apa anda yakin ingin menghapus data ini?");
@@ -88,20 +97,12 @@ $(() => {
                 }),
             })
                 .then((res) => res.json())
-                .then((data) => {
-                    alert(data.message);
+                .then((val) => {
+                    window.alert(val.data.message);
                     window.location.href = "/dashboard/teachers";
                 });
         }
     };
-});
-
-// datepicker
-$(function () {
-    $(".datepicker").datepicker({
-        todayHighlight: true,
-        language: "id",
-    });
 });
 
 // class section
@@ -463,10 +464,86 @@ $(document).ready(function () {
         if ($("input#" + id).length > 1) {
             $(`input#${id}`).attr("value", hours);
         } else {
-            if (date.getHours() < 10 && date.getMinutes() < 10) {
-                hours = `0${date.getHours()}:0${date.getMinutes()}`;
+            if (date.getHours() < 10) {
+                hours = `0${date.getHours()}:${date.getMinutes()}`;
+            }
+            if (date.getMinutes() < 10) {
+                hours = `${date.getHours()}:0${date.getMinutes()}`;
+            }
+            if (date.getSeconds() < 10) {
+                hours = `${date.getHours()}:${date.getMinutes()}:0${date.getSeconds()}`;
+            }
+            if (
+                date.getSeconds() < 10 &&
+                date.getHours() < 10 &&
+                date.getSeconds() < 10
+            ) {
+                hours = `0${date.getHours()}:0${date.getMinutes()}:${date.getSeconds()}`;
             }
             $(`#${id}`).val(hours);
         }
+    };
+});
+
+// reports section dashboard
+$(document).ready(function () {
+    let report_url = `/dashboard/reports`;
+    let new_report_url = "";
+    let report_month = "";
+    let report_year = "";
+
+    reportSelectOneYear = (e) => {
+        report_month = "";
+        report_year = e.target.value;
+        getDataReport();
+    };
+
+    reportSelectYear = (e) => {
+        if (report_month == "") {
+            report_month = $("select#reports_month").val();
+        }
+        report_year = e.target.value;
+        getDataReport();
+    };
+
+    reportSelectMonth = (e) => {
+        report_month = e.target.value;
+        if (report_month < 10) {
+            report_month = `0${e.target.value}`;
+        }
+        getDataReport();
+    };
+
+    function checkUrl(report_year, report_month, report_url = null) {
+        if (report_year && report_month) {
+            new_report_url = `${report_url}?year=${report_year}&&month=${report_month}`;
+        } else if (report_year > 0) {
+            new_report_url = `${report_url}?year=${report_year}`;
+        } else if (report_month > 0) {
+            new_report_url = `${report_url}?month=${report_month}`;
+        }
+    }
+    function getDataReport() {
+        checkUrl(report_year, report_month, report_url);
+        $.ajax({
+            type: "get",
+            url: new_report_url,
+            dataType: "html",
+            success: function (response) {
+                $("#reports_table").empty().html(response);
+            },
+        });
+    }
+
+    absentExport = (e) => {
+        if (report_year == "" && report_month == "") {
+            let month = $("select#reports_month").val();
+            new_report_url = `${report_url}/absents/export?month=${month}`;
+        } else {
+            month = "";
+        }
+        checkUrl(report_year, report_month, report_url + "/absents/export");
+        document.location.href = new_report_url;
+        // console.log(new_report_url);
     };
 });

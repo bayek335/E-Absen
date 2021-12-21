@@ -21,7 +21,7 @@
 
   {{-- datepicker css --}}
   <link rel="stylesheet" href="{{ asset('/assets/css/bootstrap-datepicker.min.css') }}">
-
+  <link href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.min.css" rel="stylesheet" type="text/css" />
   <!-- Custom styles for this template -->
   <link href="/assets/css/dashboard.css" rel="stylesheet">
 
@@ -54,6 +54,7 @@
   </script>
 
   {{-- datepicker-id --}}
+  <script src="//code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
   <script src="{{ asset('/assets/js/bootstrap-datepicker.min.js') }}"></script>
   <script src="{{ asset('/assets/js/bootstrap-datepicker.id.min.js') }}" charset="UTF-8" rtl></script>
   {{-- custom javascript --}}

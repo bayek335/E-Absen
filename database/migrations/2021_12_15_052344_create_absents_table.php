@@ -16,9 +16,11 @@ class CreateAbsentsTable extends Migration
         Schema::create('absents', function (Blueprint $table) {
             $table->id();
             $table->integer('student_id');
-            $table->date('attend_date');
+            $table->integer('day');
+            $table->integer('month');
+            $table->integer('year');
             $table->time('enter');
-            $table->time('out');
+            $table->time('out')->nullable();
             $table->integer('attend')->nullable()->default(null);
             $table->integer('permit')->nullable()->default(null);
             $table->integer('alpha')->nullable()->default(null);

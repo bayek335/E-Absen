@@ -49,7 +49,7 @@
         </div>
     </div>
     <div class="col-md-8">
-        <form action="/dashboard/absents/class/{{ $absents[0]->class_id }}/date/{{ $absents[0]->attend_date }}/edit"
+        <form action="/dashboard/absents/class/{{ $absents[0]->class_id }}/date/{{ $absents[0]->created_at }}/edit"
             method="post">
             @method("PUT")
             @csrf

@@ -24,49 +24,42 @@
         </div>
         <div class="btn-toolbar mb-2 mb-md-0 ">
             <div class="btn-group me-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary"><i class="bi bi-download"></i>
+                <button onclick="absentExport(event)" type="button" class="btn btn-sm btn-outline-secondary"><i
+                        class="bi bi-download"></i>
                     Ekspor</button>
             </div>
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col overflow-auto">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col" rowspan="2">No</th>
-                    <th scope="col" rowspan="2">NISN</th>
-                    <th scope="col" rowspan="2">Nama</th>
-                    <th scope="col" rowspan="2">L/P</th>
-                    <th scope="col" rowspan="2">Kelas</th>
-                    <th scope="col" colspan="31">Bulan</th>
-                </tr>
-                <tr>
-                    @for ($i = 1; $i <= 31; $i++) <th>{{ $i }}</th>
-                        @endfor
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                </tr>
-            </tbody>
-        </table>
+<div class="row mb-3">
+    <div class="col-sm-4">
+        <label for="month">Bulan</label>
+        <select id="reports_month" class="form-select form-select-sm" onchange="reportSelectMonth(event)">
+            @foreach ($month as $key => $mn)
+            <option @if (date('m')==$key+1) selected @endif value="{{ $key+1 }}">{{ ucFirst($mn) }}</option>
+            @endforeach
+        </select>
     </div>
+    <div class="col-sm-4">
+        <label for="year" class="d-block">Tahun</label>
+        <div class="input-group input-group-sm">
+            <input class="datepicker form-control" onchange="reportSelectYear(event)" id="year">
+            <span class="input-group-text" id="inputGroup-sizing-sm">
+                <i class="bi bi-calendar3" for="year"></i>
+            </span>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <label for="oneyear" class="d-block">Absensi / Tahun</label>
+        <div class="input-group input-group-sm">
+            <input class="datepicker form-control" onchange="reportSelectOneYear(event)" id="oneyear">
+            <span class="input-group-text" id="inputGroup-sizing-sm">
+                <i class="bi bi-calendar3"></i>
+            </span>
+        </div>
+    </div>
+</div>
+<div id="reports_table">
+    @include('dashboard.reports.index_ajax')
 </div>
 @endsection

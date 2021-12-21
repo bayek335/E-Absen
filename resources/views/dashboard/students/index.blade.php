@@ -29,8 +29,15 @@
                     Tambah</button>
             </div>
             <div class="btn-group me-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary"><i class="bi bi-download"></i>
-                    Ekspor</button>
+                <a href="{{ route('export_students') }}" class="btn btn-sm btn-outline-secondary"><i
+                        class="bi bi-download"></i>
+                    Ekspor</a>
+            </div>
+            <div class="btn-group me-2">
+                <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
+                    data-bs-target="#importModal">
+                    <i class="bi bi-upload"></i> Impor
+                </button>
             </div>
         </div>
     </div>
@@ -42,6 +49,16 @@
     </div>
 </div>
 @endif
+<div class="col-12 d-block position-relative" style="z-index: 5">
+    @error('class')
+    <span class="bagde alert-danger px-4 py-1 position-absolute end-0 rounded">{{ $message }}</span>
+    @enderror
+    @error('excel')
+    <span class="alert alert-danger px-4 py-1 position-absolute end-0 rounded">{{
+        $message
+        }}</span>
+    @enderror
+</div>
 <div class="row">
     @if (count($students)>0)
     <div class="col-12 mb-3">
@@ -86,5 +103,42 @@
 
 </div>
 
+
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/dashboard/students/import" method="POST" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Pilih berkas berformat .xlsx</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @csrf
+                    <div class="form-group mb-3">
+                        <label for="class">Kelas</label>
+                        <select class=" form-select form-select-sm" id="class" name="class">
+                            <option value="">Pilih...</option>
+                            @foreach ($classes as $class)
+                            <option value="{{ $class->id }}">{{ ucFirst($class->name) }} ( {{ $class->roman }} )
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="file">Pilih file ( <small>.csv, .xls, .xlsx</small> )</label>
+                        <input type="file" class="input form-control form-control-sm" id="file" name="excel">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Import</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 @endsection

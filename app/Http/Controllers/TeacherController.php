@@ -171,9 +171,12 @@ class TeacherController extends Controller
         Teacher::destroy($teacher->id);
         SubjectTeacher::where("teacher_id", $teacher->id)->delete();
 
+        if (request('teacher_show_delete')) {
+            return redirect()->to('/dashboard/teachers')->with('success', "Data berhasil dihapus <i class='bi bi-check-lg'></i>");
+        }
         return response()->json([
-            'status' => 'succes',
-            'message' => 'Data berhasil dihapus!'
+            'status' => 'success',
+            'data' => ['message' => 'Data berhasil dihapus.']
         ]);
     }
 }

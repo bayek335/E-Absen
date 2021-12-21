@@ -2,7 +2,7 @@
     Data belum tersedia
     </div>
     @else
-    <a href="/dashboard/absents/class/{{ $absents[0]->class_id }}/date/{{ $absents[0]->attend_date }}/edit"
+    <a href="/dashboard/absents/class/{{ $absents[0]->class_id }}/date/{{ $absents[0]->created_at }}/edit"
         class="btn btn-sm btn-success mb-3">Perbarui
         semua</a>
     <table class="table table-bordered">
@@ -24,7 +24,7 @@
                 <th scope="row">{{ $loop->iteration+$absents->firstItem()-1 }}</th>
                 <td>{{ $abs->name }}</td>
                 <td>Enam ( VI )</td>
-                <td>{{ $abs->attend_date }}</td>
+                <td>{{ $abs->year }}-{{ $abs->month }}-{{ $abs->day }}</td>
                 <td>{{ $abs->enter }}</td>
                 <td>{{ $abs->out }}</td>
                 <td>
@@ -116,7 +116,10 @@
                             <p class="alert alert-warning py-0"><small>Click tombol pulang untuk mngatur jam pulang
                                     siswa
                                     (Jika ada).</small></p>
-                            <p>Tanggal : {{ Carbon\Carbon::parse($abs->attend_date)->format('D, d F Y') }}
+                            <p>Tanggal : {{ Carbon\Carbon::parse($abs->day)->format('D') }}, {{
+                                Carbon\Carbon::parse($abs->day)->format('d') }} {{
+                                Carbon\Carbon::parse($abs->month)->format('F') }} {{
+                                Carbon\Carbon::parse($abs->year)->format('Y') }}
                             </p>
                             <div class="row">
                                 <div class="col-md form-group">
@@ -128,7 +131,7 @@
                                     <div class="row">
                                         <div class="col">
                                             <label for="out">Hadir</label>
-                                            <input id="out_{{ $abs->absent_id }}" type="time"
+                                            <input id="out_{{ $abs->absent_id }}" type="time" step="any"
                                                 class="form-control form-control-sm"
                                                 value="@if($abs->out){{ $abs->out }}@endif" @if($abs->out)
                                             readonly @else required @endif name="out">
@@ -161,7 +164,7 @@
                             <input type="hidden" name="class" value="{{ $abs->class_id   }}">
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-sm btn-secondary"
+                            <button type="button" class="btn btn-sm btn-secondary"
                                 data-bs-dismiss="modal">Batal</button>
                             <button type="submit" class="btn btn-sm btn-primary">Simpan
                                 perubahan</button>

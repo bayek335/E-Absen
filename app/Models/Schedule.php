@@ -19,7 +19,7 @@ class Schedule extends Model
             ->join('classes', 'class_id', '=', 'classes.id')
             ->join('days', 'day_id', '=', 'days.id')
             ->join('subjects', 'subject_id', '=', 'subjects.id')
-            ->select(DB::raw('count(schedules.day_id) as sbj_count , days.name as day_name, schedules.day_id, schedules.class_id, classes.name as class_name, classes.roman, classes.id as class_id'))
+            ->select(DB::raw('sum(schedules.day_id) as sbj_count , days.name as day_name, schedules.day_id, schedules.class_id, classes.name as class_name, classes.roman, classes.id as class_id'))
             ->where('schedules.class_id', $class_id)
             ->groupBy('schedules.day_id', 'schedules.class_id', 'days.name', 'classes.name', 'classes.id', 'classes.roman');
     }

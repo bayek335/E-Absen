@@ -17,7 +17,7 @@ class AbsentController extends Controller
         'alpha' => 3,
     ];
 
-    protected $select = ['absents.id as absent_id', 'nisn', 'name', 'attend_date', 'enter', 'out', 'attend', 'permit', 'alpha', 'class_id', 'student_id'];
+    protected $select = ['absents.id as absent_id', 'nisn', 'name', 'year', 'month', 'day', 'enter', 'out', 'attend', 'permit', 'alpha', 'class_id', 'student_id', 'absents.created_at'];
     /**
      * Display a listing of the resource.
      *
@@ -74,17 +74,21 @@ class AbsentController extends Controller
         }
         try {
             foreach ($request->desc as $key => $value) {
-                $find = Absent::where('student_id', $request->student_id[$key - 1])->where('attend_date', date('Y-m-d'))->get();
+                foreach ($request->student_id as $id) {
+                    $find = Absent::where('student_id', $id)->where('year', date('Y'))->where('month', date('m'))->where('day', date('d'))->get();
+                }
                 if (count($find) < 1) {
                     $absent = new Absent();
-                    $absent->student_id = $request->student_id[$key - 1];
-                    $absent->attend_date = date('Y-m-d');
+                    $absent->student_id = $key;
+                    $absent->year = date('Y');
+                    $absent->month = date('m');
+                    $absent->day = date('d');
                     $absent->enter = date('H:i:s');
                     $desc_key =  array_search($value, $desc);
                     $absent->$desc_key = 1;
                     $absent->save();
                 } else {
-                    return back()->with('fail', 'Absensi siswa pada ' . date('Y-m-d') . ' telah ditemukan pilih <strong>Ubah</strong> untuk memperbaruinya.');;
+                    return back()->with('fail', 'Absensi siswa pada ' . date('Y-m-d') . ' telah ditemukan pilih <strong>Ubah</strong> untuk memperbaruinya.');
                 }
             }
             return redirect()->to('/dashboard/absents')->with('success', "Absensi berhasil ditambahkan<i class='bi bi-check-lg'></i>");
@@ -110,10 +114,10 @@ class AbsentController extends Controller
      * @param  \App\Models\Absent  $absent
      * @return \Illuminate\Http\Response
      */
-    public function edit($class_id, $attend_date)
+    public function edit($class_id, $created_at)
     {
         $title = "Perbarui Absensi | Dashboard";
-        $absents = Absent::getAbsents($this->select)->where('class_id', $class_id)->where('attend_date', $attend_date)->get();
+        $absents = Absent::getAbsents($this->select)->where('class_id', $class_id)->where('absents.created_at', $created_at)->get();
         return view('dashboard.absents.edit', compact(['title', 'absents']));
     }
 
@@ -128,7 +132,7 @@ class AbsentController extends Controller
     {
         foreach ($this->desc as $key => $desc) {
             if ($this->desc[$key] == $request->desc) {
-                $absent->$key = $request->desc;
+                $absent->$key = 1;
             } else {
                 $absent->$key = NULL;
             }
@@ -151,7 +155,7 @@ class AbsentController extends Controller
             $absent = Absent::find($id);
             foreach ($this->desc as $key => $desc) {
                 if ($this->desc[$key] == $request->desc[$key_absent]) {
-                    $absent->$key = $request->desc[$key_absent];
+                    $absent->$key = 1;
                 } else {
                     $absent->$key = NULL;
                 }

@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\studentsImport;
 use App\Models\Student;
 use App\Models\ClassModel;
 use App\Models\SecondaryPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Maatwebsite\Excel\Facades\Excel;
 use Throwable;
 
 class StudentDashboardController extends Controller
 {
+
+    protected $default_img_name = 'images/profile_images/default-profile-picture.png';
+
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +31,7 @@ class StudentDashboardController extends Controller
             $limit = $request->lim;
         }
         $classes = ClassModel::orderBy('class', 'asc')->get();
-        $students = Student::latest()->filters(request(['name', 'class', 'gender']))->orderBy('class_id', 'asc')->paginate($limit);
+        $students = Student::filters(request(['name', 'class', 'gender']))->orderBy('class_id')->orderBy('name')->paginate($limit);
 
         if ($request->ajax()) {
             return view('dashboard.students.ajax_index', compact(['title', 'students', 'classes']));
@@ -79,7 +84,7 @@ class StudentDashboardController extends Controller
         $student->gender = $request->gender;
         $student->class_id = $request->class;
         $student->status_id = 4;
-        $student->image = 'images/profile_images/default-profile-picture.png';
+        $student->image = $this->default_img_name;
 
         $student->save();
         try {
@@ -167,6 +172,8 @@ class StudentDashboardController extends Controller
 
             $secondary_pwd->save();
         } catch (Throwable $e) {
+
+            ddd($e);
             return back()->with('fail', 'Terjadi kesalahan saat menyimpan data');
         }
         $student->save();
@@ -181,9 +188,39 @@ class StudentDashboardController extends Controller
      */
     public function destroy(Student $student)
     {
-        Storage::delete($student->image);
-        SecondaryPassword::where('student_id', $student->id)->delete();
-        Student::where('nisn', $student->nisn)->delete();
+        try {
+            Student::where('nisn', $student->nisn)->delete();
+            SecondaryPassword::where('student_id', $student->id)->delete();
+            Storage::delete($student->image);
+
+            return response()->json([
+                'status' => 'success',
+                'data' => [
+                    'message' => 'Data berhasil dihapus'
+                ]
+            ]);
+        } catch (\Throwable $th) {
+            if (count(Student::where('id', $student->id)->get()) <= 0) {
+                Student::create([
+                    'id' => $student->id,
+                    'nisn' => $student->nisn,
+                    'name' => $student->name,
+                    'username' => $student->username,
+                    'password' => $student->password,
+                    'image' => $student->image,
+                    'class_id' => $student->class_id,
+                    'gender' => $student->gender,
+                    'created_at' => $student->created_at,
+                    'updated_at' => $student->updated_at,
+                ]);
+            }
+            return response()->json([
+                'status' => 'success',
+                'data' => [
+                    'message' => 'Terjadi kesalahan saat mengirim data!'
+                ]
+            ]);
+        }
     }
 
 
@@ -197,7 +234,9 @@ class StudentDashboardController extends Controller
 
         if ($mimes[0] == 'image') {
 
-            Storage::delete($student->image);
+            if ($student->image != $this->default_img_name) {
+                Storage::delete($student->image);
+            }
             $image_name = $request->file('image')->store('images/profile_images');
             $student = Student::find($student->id);
             $student->image = $image_name;
@@ -217,5 +256,29 @@ class StudentDashboardController extends Controller
                 ],
             ]);
         }
+    }
+
+
+    // Import file
+    public function import(Request $request)
+    {
+
+        $request->validate(
+            [
+                'class' => 'required|',
+                'excel' => 'required|file|mimes:csv,xls,xlsx'
+            ]
+        );
+
+        $file = $request->file('excel');
+
+
+
+        // ddd($file);
+        // $filename = rand() . $file->getClientOriginalName();
+
+        Excel::import(new studentsImport($request->class), $file);
+
+        return redirect()->to('/dashboard/students')->with('success', "Data berhasil di-Impor ");
     }
 }
